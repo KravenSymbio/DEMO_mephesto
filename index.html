@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Video Subtitles</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <style>
+    /* ...Existing CSS styles... */
+    .timeline {
+      width: 700px;
+      height: 10px;
+      background-color: #f2f2f2;
+      margin: 10px auto 30px;
+      position: relative;
+      top: -20px;
+    }
+
+    .timeline-marker {
+      width: 5px;
+      height: 20px;
+      background-color: #333;
+      position: absolute;
+      top: -5px;
+      cursor: pointer;
+    }
+
+    .tooltip-text {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #000;
+      color: #fff;
+      padding: 5px;
+      border-radius: 5px;
+      display: none;
+    }
+
+    .button-container {
+      text-align: left;
+      margin-left: 20px;
+    }
+
+    /* Added CSS for image positioning */
+    .image-container {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .image-container img {
+      height: 200px; /* Adjust the height as per your requirement */
+      object-fit: cover;
+    }
+
+    .image-container .inria-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 150px; /* Adjust the width as per your requirement */
+      height: auto; /* Maintain the aspect ratio */
+    }
+
+    .image-container .dfki-image {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150px; /* Adjust the width as per your requirement */
+      height: auto; /* Maintain the aspect ratio */
+    }
+
+    /* Added CSS for custom colors */
+    .arm-rub-row {
+      background-color: #ffd700; /* Use the desired color for Arm Rub */
+    }
+
+    .crying-row {
+      background-color: #ff0000; /* Use the desired color for Crying */
+    }
+
+    .Eye-Rub-row {
+      background-color: aqua;
+    }
+
+    .Neck-Touch-row {
+      background-color: darkcyan;
+    }
+
+    .Face-Touch-row{
+      background-color: darksalmon;
+    }
+
+    .Lips-Scratch-row{
+      background-color: burlywood;
+    }
+
+    .Hair-Scratch-row{
+      background-color: cadetblue;
+    }
+
+
+
+    .crying-2-row {
+      background-color: #00ff00; /* Use the desired color for Crying 2 */
+    }
+
+    /* Added CSS for the CSV button */
+    .csv-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="container text-center">
+  <div class="image-container">
+    <img class="inria-image" src="inria.png" alt="INRIA Image">
+    <img class="dfki-image" src="DFKI.png" alt="DFKI Image">
+  </div>
+
+  <video id="frenchvideo" src="\demo.mp4" controls width="700" height="500">
+    <track default src="\Clinician_captions.vtt" kind="subtitles" srclang="fr" label="French">
+  </video>
+</div>
+
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Clinician</th>
+        <th>Patient</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="crying-row">
+        <td>Crying</td>
+        <td><input type="checkbox" id="clinicianCryingCheckbox"></td>
+        <td><input type="checkbox" onclick="performAction('Crying', 512, 540)" id="patientCryingCheckbox"></td>
+      </tr>
+      <tr class="Face-Touch-row">
+        <td>FaceTouch</td>
+        <td><input type="checkbox" onclick="performAction('FaceTouch',78, 79)" id="clinicianCrouchingCheckbox"></td>
+        <td><input type="checkbox" id="patientCrouchingCheckbox"></td>
+      </tr>
+      <tr class="arm-rub-row">
+        <td>Arm Rub</td>
+        <td><input type="checkbox" id="clinicianArmRubCheckbox"></td>
+        <td><input type="checkbox" id="patientArmRubCheckbox"></td>
+      </tr>
+      <tr class="Neck-Touch-row">
+        <td>Neck touch</td>
+        <td><input type="checkbox" onclick="performAction('NeckTouch',518,522)" id="ClinicianNeckTouchCheckbox"></td>
+        <td><input type="checkbox" id="patientNeckTouchCheckbox"></td>
+      </tr>
+      <tr class="Eye-Rub-row">
+        <td>Eye Rub</td>
+        <td><input type="checkbox" onclick="performAction('EyeRub',626,629)" id="ClinicianEyeRubCheckbox"></td>
+        <td><input type="checkbox" id="patientEyeRubCheckbox"></td>
+      </tr>
+      <tr class="Lips-Scratch-row">
+        <td>Lips Scratch</td>
+        <td><input type="checkbox" onclick="performAction('LipsScratch',641,643)" id="ClinicianLipsScratchCheckbox"></td>
+        <td><input type="checkbox" id="patientLipsScratchCheckbox"></td>
+        </tr>
+
+      <tr class="Hair-Scratch-row">
+        <td>Hair Scratch</td>
+        <td><input type="checkbox" onclick="performAction('HairScratch',755,756)" id="ClinicianHairScratchCheckbox"></td>
+        <td><input type="checkbox" id="patientHairScratchCheckbox"></td>
+      </tr>
+      <tr class="crying-2-row">
+        <td>Crying 2</td>
+        <td><input type="checkbox" id="clinicianCrying2Checkbox"></td>
+        <td><input type="checkbox" id="patientCrying2Checkbox"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="button-container">
+  <button onclick="playVideo()">Play</button><br>
+  <button onclick="pauseVideo()">Pause</button><br>
+  <button onclick="trimVideo(10, 20)">Trim</button><br>
+  <button onclick="performAction('Crying', 512, 540)">Crying</button><br>
+  <button onclick="performAction('Laugh', 758, 770)">Laugh</button><br>
+  <button onclick="performAction('Head Scratch', 329, 334)">Head Scratch</button><br>
+  <button onclick="performAction('Head Tilt', 97, 105)">Head Tilt</button><br>
+  <button onclick="performAction('Arm Rub', 56, 96)">Arm Rub</button><br>
+</div>
+<div class="timeline" id="videoTimeline">
+  <div class="timeline-marker">
+    <span class="tooltip-text"></span>
+  </div>
+</div>
+
+<!-- Added CSV button -->
+<button class="csv-button" onclick="handleCSVFile()">Upload CSV</button>
+
+<script>
+  const videoPlayer = document.getElementById('frenchvideo');
+  const timeline = document.getElementById('videoTimeline');
+  const timelineMarker = timeline.querySelector('.timeline-marker');
+  const tooltipText = timeline.querySelector('.tooltip-text');
+
+  // Define the start and end times (in seconds) for each feature
+  const features = [
+    { name: 'Trim', startTime: 10, endTime: 20 },
+    { name: 'Crying', startTime: 512, endTime: 540 },
+    { name: 'Laugh', startTime: 758, endTime: 770 },
+    { name: 'Head Scratch', startTime: 329, endTime: 334 },
+    { name: 'Head Tilt', startTime: 97, endTime: 105 },
+    { name: 'FaceTouch', startTime: 78, endTime: 79 },
+    { name: 'Arm Rub', startTime: 56, endTime: 96 },
+    {name:  'NeckTouch', startTime: 518, endTime: 522},
+    {name: 'EyeRub', startTime: 626, endTime: 629},
+    {name: 'LipsScratch', startTime: 641, endTime: 643},
+    {name: 'HairScratch', startTime: 755, endTime: 756},
+  ];
+
+  // Update the position of the timeline marker based on the video's current time
+  videoPlayer.addEventListener('timeupdate', function() {
+    const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+    timelineMarker.style.left = `${progress}%`;
+  });
+
+  // Seek to a specific position on the timeline when clicked
+  timeline.addEventListener('click', function(event) {
+    const timelineWidth = timeline.offsetWidth;
+    const clickPosition = event.offsetX;
+    const percentage = (clickPosition / timelineWidth) * 100;
+    const seekTime = (videoPlayer.duration / 100) * percentage;
+    videoPlayer.currentTime = seekTime;
+  });
+
+  timelineMarker.addEventListener('mouseenter', function() {
+    const currentTime = videoPlayer.currentTime;
+    const feature = features.find(f => currentTime >= f.startTime && currentTime <= f.endTime);
+    if (feature) {
+      tooltipText.textContent = `${feature.name} (${feature.startTime}-${feature.endTime})`;
+      tooltipText.style.display = 'block';
+    }
+  });
+
+  timelineMarker.addEventListener('mouseleave', function() {
+    tooltipText.style.display = 'none';
+  });
+
+  // Play the video
+  function playVideo() {
+    videoPlayer.play();
+  }
+
+  // Pause the video
+  function pauseVideo() {
+    videoPlayer.pause();
+  }
+
+  // Trim the video
+  function trimVideo(startTime, endTime) {
+    videoPlayer.currentTime = startTime;
+    videoPlayer.play();
+  }
+
+  /// Perform actions based on buttons
+  function performAction(action, startTime, endTime) {
+    switch (action) {
+      case 'Crying':
+       /* const crying = features.find(f => f.name =='Crying');
+        videoPlayer.currentTime = crying.startTime;
+        videoPlayer.play();*/
+        const patientCryingCheckbox = document.getElementById("patientCryingCheckbox");
+        const clinicianCryingCheckbox = document.getElementById('clinicianCryingCheckbox');
+
+        if (patientCryingCheckbox.checked) {
+          // Perform action for patient crying
+          
+          const crying = features.find(f => f.name === 'Crying');
+          videoPlayer.currentTime = crying.startTime;
+          videoPlayer.play(); 
+          console.log('Patient is crying');
+        }
+
+        if (clinicianCryingCheckbox.checked) {
+          // Perform action for clinician crying
+          console.log('Clinician is crying');
+        }
+        break;
+
+      case 'Laugh':
+        // Perform actions for laughing
+        console.log('Laughing');
+        break;
+
+      case 'Head Scratch':
+        // Perform actions for head scratching
+      const headScratchFeature = features.find(f => f.name === 'Head Scratch');
+        videoPlayer.currentTime = headScratchFeature.startTime;
+        videoPlayer.play();
+        break;
+
+      case 'Head Tilt':
+        // Perform actions for head tilt
+        const headTilt = features.find(f => f.name === 'Head Tilt');
+        videoPlayer.currentTime = headTilt.startTime;
+        videoPlayer.play(); 
+        console.log('Head tilt');
+        break;
+
+      case 'Arm Rub':
+        const patientArmRubCheckbox = document.getElementById('patientArmRubCheckbox');
+        const clinicianArmRubCheckbox = document.getElementById('clinicianArmRubCheckbox');
+
+        if (patientArmRubCheckbox.checked) {
+          // Perform action for patient arm rub
+          console.log('Patient is rubbing arm');
+        }
+
+        if (clinicianArmRubCheckbox.checked) {
+          // Perform action for clinician arm rub
+          console.log('Clinician is rubbing arm');
+        }
+        break;
+        case 'NeckTouch':
+        const NeckTouch =features.find(f => f.name === 'NeckTouch');
+        videoPlayer.currentTime = NeckTouch.startTime;
+        videoPlayer.play();
+          const patientNeckTouchCheckbox = document.getElementById('patientFaceTOuchCheckbox');
+          const ClinicianNeckTouchCheckbox = document.getElementById('ClinicianNeckTouchCheckbox');
+
+        break;
+        case 'EyeRub':
+        const EyeRub =features.find(f => f.name === 'EyeRub');
+        videoPlayer.currentTime = EyeRub.startTime;
+        videoPlayer.play();
+          const patientEyeRubCheckbox = document.getElementById('patientEyeRubCheckbox');
+          const ClinicianEyeRubCheckbox = document.getElementById('ClinicianEyeRubCheckbox');
+
+        break;
+
+        case 'LipsScratch':
+        const LipsScratch =features.find(f => f.name === 'LipsScratch');
+        videoPlayer.currentTime = LipsScratch.startTime;
+        videoPlayer.play();
+          const patientLipsScratchCheckbox = document.getElementById('patientLipsScratchCheckbox');
+          const ClinicianLipsScratchCheckbox = document.getElementById('ClinicianLipsScratchCheckbox');
+
+        break;
+        case 'HairScratch':
+        const HairScratch =features.find(f => f.name === 'HairScratch');
+        videoPlayer.currentTime = HairScratch.startTime;
+        videoPlayer.play();
+          const patientHairScratchCheckbox = document.getElementById('patientHairScratchCheckbox');
+          const ClinicianHairScratchCheckbox = document.getElementById('ClinicianHairScratchCheckbox');
+
+        break;
+
+      
+        case 'FaceTouch':
+        const FaceTouch = features.find(f => f.name === 'FaceTouch');
+        videoPlayer.currentTime = FaceTouch.startTime;
+        videoPlayer.play();
+          const patientFaceTouchCheckbox = document.getElementById('patientFaceTouchCheckbox');
+          const ClinicianFaceTouchCheckbox = document.getElementById('clinicianFaceTouchCheckbox');
+
+      default:
+        break;
+    }
+  }
+
+  const clinicianCheckbox = document.getElementById('clinicianCryingCheckbox');
+const patientCheckbox = document.getElementById('patientCryingCheckbox');
+
+clinicianCheckbox.addEventListener('change', function() {
+  if (this.checked) {
+    console.log('Clinician checkbox is checked');
+  } else {
+    console.log('Clinician checkbox is unchecked');
+  }
+});
+
+patientCheckbox.addEventListener('change', function() {
+  if (this.checked) {
+    const crying = features.find(f => f.name === 'Crying');
+          videoPlayer.currentTime = crying.startTime;
+          videoPlayer.play();
+    console.log('Patient checkbox is checked');
+  } else {
+    console.log('Patient checkbox is unchecked');
+  }
+});
+
+  // Handle CSV file upload
+  function handleCSVFile() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv';
+    input.onchange = handleFileSelect;
+    input.click();
+  }
+
+  // Read the CSV file and perform actions based on its contents
+  function handleFileSelect(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      const contents = e.target.result;
+      const rows = contents.split('\n');
+      
+      rows.forEach(row => {
+        const [feature, clinicianAction, patientAction] = row.split(',');
+        const featureCheckboxId = `clinician${feature.replace(' ', '')}Checkbox`;
+        const featureCheckbox = document.getElementById(featureCheckboxId);
+
+        if (featureCheckbox) {
+          if (clinicianAction == 1) {
+            featureCheckbox.checked = true;
+            performAction(feature, 0, 0); // Call the performAction function for the checked feature
+          }
+
+          // Update patient checkboxes based on the CSV file
+          const patientFeatureCheckboxId = `patient${feature.replace(' ', '')}Checkbox`;
+          const patientFeatureCheckbox = document.getElementById(patientFeatureCheckboxId);
+
+          if (patientFeatureCheckbox) {
+            if (patientAction == 1) {
+              patientFeatureCheckbox.checked = true;
+              performAction(feature, 0, 0);
+            }
+          }
+        }
+      });
+    };
+
+    reader.readAsText(file);
+  }
+</script>
+</body>
+</html>
