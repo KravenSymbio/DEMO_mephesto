@@ -36,8 +36,12 @@
     }
 
     .button-container {
-      text-align: left;
-      margin-left: 20px;
+      text-align: center !important;
+      
+    
+      margin: 0 20px;
+      display: inline-block;
+    
     }
 
     /* Added CSS for image positioning */
@@ -53,10 +57,10 @@
     }
 
     .image-container .inria-image {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 150px; /* Adjust the width as per your requirement */
+      position: center;
+      top: auto;
+      left: auto;
+      width: auto; /* Adjust the width as per your requirement */
       height: auto; /* Maintain the aspect ratio */
     }
 
@@ -97,7 +101,14 @@
       background-color: cadetblue;
     }
 
-
+video{
+  
+ width: 720px;
+ height: 480px;
+ top: 30px;
+  display: block;
+  margin: 0 auto;
+}
 
     .crying-2-row {
       background-color: #00ff00; /* Use the desired color for Crying 2 */
@@ -114,22 +125,23 @@
       border: none;
       cursor: pointer;
     }
+    .center{
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+      height: 60%;
+      margin-top: 5%;
+    }
   </style>
 </head>
 <body>
-<div class="container text-center">
   <div class="image-container">
-    <img class="inria-image" src="inria.png" alt="INRIA Image">
-    <img class="dfki-image" src="DFKI.png" alt="DFKI Image">
+    <img src="inria.png" alt="INRIA Image">
+    <img src="DFKI.png" alt="DFKI Image">
   </div>
 
-  <video id="frenchvideo" src="\demo.mp4" controls width="700" height="500">
-    <track default src="\Clinician_captions.vtt" kind="subtitles" srclang="fr" label="French">
-  </video>
-</div>
-
 <div class="container">
-  <table class="table">
+  <table class="center">
     <thead>
       <tr>
         <th></th>
@@ -174,16 +186,18 @@
         <td><input type="checkbox" onclick="performAction('HairScratch',755,756)" id="ClinicianHairScratchCheckbox"></td>
         <td><input type="checkbox" id="patientHairScratchCheckbox"></td>
       </tr>
-      <tr class="crying-2-row">
-        <td>Crying 2</td>
-        <td><input type="checkbox" id="clinicianCrying2Checkbox"></td>
-        <td><input type="checkbox" id="patientCrying2Checkbox"></td>
-      </tr>
+
+      
     </tbody>
   </table>
 </div>
+<div class="video">
+  <video id="frenchvideo" src="\demo.mp4" class="video" width="480px" height="480px" controls>
+    <track default src="\Clinician_captions.vtt" kind="subtitles" srclang="fr" label="French">
+  </video>
+</div>
 
-<div class="button-container">
+<div style="display: inline-block;">
   <button onclick="playVideo()">Play</button><br>
   <button onclick="pauseVideo()">Pause</button><br>
   <button onclick="trimVideo(10, 20)">Trim</button><br>
