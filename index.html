@@ -74,25 +74,24 @@
 
 
 .timeline {
-    width: 700px;
-    height: 10px;
-    background-color: #f2f2f2;
-    margin: -13% auto 2%;
-    
-    position: center;
-  
-    /* Added margin-top to push the timeline down */
-  }
+      width: 700px;
+      height: 10px;
+      background-color: #f2f2f2;
+      margin: 0 auto 2%;
+      position: relative;
+      margin-top: -180px;
+    }
 
 
-.timeline-marker {
+  .timeline-marker {
   width: 5px;
   height: 20px;
-  position: center;
   background-color: #333;
-  top: 10%;
   cursor: pointer;
+  position: absolute;
+  transform: translateX(-50%);
 }
+
 
 
     /* Added CSS for image positioning */
@@ -122,6 +121,22 @@
       width: 150px; /* Adjust the width as per your requirement */
       height: auto; /* Maintain the aspect ratio */
     }
+
+    .image-container .patient-Clinician-image {
+  position: absolute;
+  bottom: -100px; /* Adjust the bottom position as needed to move it to the bottom */
+  right: 10px; /* Adjust the right position as needed */
+  width: 150px; /* Adjust the width as per your requirement */
+  height: auto; /* Maintain the aspect ratio */
+}
+
+.image-container .med-logo-image {
+  position: absolute;
+  bottom: -600px; /* Adjust the bottom position as needed */
+  left: 10px; /* Adjust the left position as needed */
+  width: 150px; /* Adjust the width as per your requirement */
+  height: auto; /* Maintain the aspect ratio */
+}
 
     /* Added CSS for custom colors */
     .arm-rub-row {
@@ -189,6 +204,8 @@ video{
   <div class="image-container">
     <img src="inria.png" alt="INRIA Image">
     <img src="DFKI.png" alt="DFKI Image">
+    <img src="patient_Clinician.png" alt="Patient Clinician Image">
+    <img src="med_logo.jpg" alt="Med Logo Image" class="med-logo-image">
   </div>
 
 <div class="container">
@@ -248,6 +265,11 @@ video{
   </video>
 </div>
 
+
+
+
+<!--dictionry {"id": [1,2,3,4], "behavior": [...],} -->
+
 <div class="button-container">
   <!--<button class="btn faceT-button" style="width: 3%;" onclick="performAction('FaceTouch',78,79)"></button> -->
   <!--<button class="btn HeadT-button" style="width: 8%; margin-left: -5%; margin-top: 3%;" onclick="performAction('Head Tilt', 97, 105)"></button> -->
@@ -255,21 +277,29 @@ video{
   <!-- HeadS-button -->
   <button class="btn HeadS-button" onclick="performAction('Head Scratch', 329, 334)"></button>
 
+  <button class="btn HeadS2-button" onclick="performAction('Head Scratch', 329, 334)"></button>
+
   <!-- Crying-button -->
-  <button class="btn crying-button" onclick="performAction('Crying', 512, 540)"></button>
+  <button class="btn crying-button" data-name="Crying" onclick="performAction('Crying', 512, 540)"></button>
 
   <!-- neckT-button -->
-  <button class="btn neckT-button" onclick="performAction('NeckTouch', 518, 522)"></button>
+  <button class="btn neckT-button" data-name="NeckTouch" onclick="performAction('NeckTouch', 518, 522)"></button>
+
+  <button class="btn neckT2-button" onclick="performAction('NeckTouch', 290, 293)"></button>
 
   <!-- lipS-button -->
-  <button class="btn lipS-button" onclick="performAction('Lips Scratch',641,643)"></button>
+  <button class="btn lipS-button" data-name="LipsScratch" onclick="performAction('Lips Scratch',641,643)"></button>
 
   <!-- hairS-button -->
   <button class="btn hairS-button" onclick="performAction('HairScratch',755,756)"></button>
 
   <!-- Laugh-button -->
   <button class="btn Laugh-button" onclick="performAction('Laugh', 758, 770)"></button>
+
+  <button class="btn Laugh2-button" onclick="performAction('Laugh', 342, 350)"></button>
 </div>
+
+
 
 <style>
   .btn {
@@ -285,45 +315,71 @@ video{
 
   .HeadS-button {
     background-color: rgb(231, 133, 5);
-    width: 5%;
-    margin-left: 10%;
-    margin-top: 12%;
+    width: 100px;
+    margin-left: 120px;
+    margin-top: 10px;
   }
 
+  .HeadS2-button {
+    background-color: rgb(231, 133, 5);
+    width: 100px;
+    margin-left: 500px;
+    margin-top: -20px;
+  }
+
+ 
   .crying-button {
     background-color: #ff0000;
     width: 20%;
     margin-left: 10%;
-    margin-top: 2%; /* Adjust the vertical spacing as needed */
+    margin-top: 10px; /* Adjust the vertical spacing as needed */
   }
 
   .neckT-button {
     background-color: darkcyan;
     width: 6%;
-    margin-left: 35%; /* Adjust the margin-left to position it next to the orange button */
-    margin-top: -9%;
+    margin-left: 10%; /* Adjust the margin-left to position it next to the orange button */
+    margin-top: 10px;
+  }
+
+
+  .neckT2-button {
+    background-color: darkcyan;
+    width: 6%;
+    margin-left: 40%; /* Adjust the margin-left to position it next to the orange button */
+    margin-top: 10px;
   }
 
   .lipS-button {
     background-color: burlywood;
     width: 4%;
-    margin-left: 35%;
-    margin-top: 1%;
+    margin-left: 10%;
+    margin-top: 10px;
   }
 
   .hairS-button {
     background-color: cadetblue;
     width: 4%;
-    margin-left: 48%;
-    margin-top: -2%;
+    margin-left: 10%;
+    margin-top: 10px;
   }
 
   .Laugh-button {
     background-color: rgb(4, 239, 247);
     width: 10%;
-    margin-left: 48%;
-    margin-top: 1%;
+    margin-left: 10%;
+    margin-top: 10px;
   }
+
+  .Laugh2-button {
+    background-color: rgb(4, 239, 247);
+    width: 10%;
+    margin-left: 30%;
+    margin-top: 10px;
+  }
+
+
+
 </style>
 
     <!-- Add more buttons for other features -->
@@ -401,10 +457,10 @@ features.forEach(feature => {
   ];
 
   // Update the position of the timeline marker based on the video's current time
-  videoPlayer.addEventListener('timeupdate', function() {
-    const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
-    timelineMarker.style.left = `${progress}%`;
-  });
+  videoPlayer.addEventListener('timeupdate', function () {
+  const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+  timelineMarker.style.left = `${progress}%`;
+});
 
   // Seek to a specific position on the timeline when clicked
   timeline.addEventListener('click', function(event) {
@@ -582,41 +638,51 @@ patientCheckbox.addEventListener('change', function() {
   }
 
   // Read the CSV file and perform actions based on its contents
-  function handleFileSelect(event) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-      const contents = e.target.result;
-      const rows = contents.split('\n');
-      
-      rows.forEach(row => {
-        const [feature, clinicianAction, patientAction] = row.split(',');
-        const featureCheckboxId = `clinician${feature.replace(' ', '')}Checkbox`;
-        const featureCheckbox = document.getElementById(featureCheckboxId);
-
-        if (featureCheckbox) {
-          if (clinicianAction == 1) {
-            featureCheckbox.checked = true;
-            performAction(feature, 0, 0); // Call the performAction function for the checked feature
-          }
-
-          // Update patient checkboxes based on the CSV file
-          const patientFeatureCheckboxId = `patient${feature.replace(' ', '')}Checkbox`;
-          const patientFeatureCheckbox = document.getElementById(patientFeatureCheckboxId);
-
-          if (patientFeatureCheckbox) {
-            if (patientAction == 1) {
-              patientFeatureCheckbox.checked = true;
-              performAction(feature, 0, 0);
-            }
-          }
-        }
-      });
-    };
-
-    reader.readAsText(file);
+  function handleCSVFile() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv';
+    input.onchange = handleFileSelect;
+    input.click();
   }
+
+  // Read the CSV file and create buttons based on its contents
+  function handleFileSelect(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function(e) {
+        const contents = e.target.result;
+        console.log(contents)
+        const rows = contents.split('\n');
+        rows.shift(); // Remove the header row
+
+        rows.forEach(row => {
+          const [name, startTime, endTime] = row.split(',');
+          updateButton(name, Number(startTime), Number(endTime));
+        });
+      };
+
+      reader.readAsText(file);
+
+
+    }
+        
+    // Function to update the existing button with CSV data
+    function updateButton(name, startTime, endTime) {
+      const existingButton = document.querySelector(`button[data-name="${name}"]`);
+      if (existingButton) {
+        const buttonWidth = ((endTime - startTime) / videoPlayer.duration) * 100;
+        console.log("name:" + name + " width " + buttonWidth)
+        existingButton.style.width = `${buttonWidth}%`;
+        existingButton.dataset.startTime = startTime;
+        existingButton.dataset.endTime = endTime;
+      }
+    }
+
+
+  
+  
 </script>
 </body>
 </html>
