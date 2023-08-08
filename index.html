@@ -270,7 +270,7 @@ video{
 
 <!--dictionry {"id": [1,2,3,4], "behavior": [...],} -->
 
-<div class="button-container">
+<div id="buttonContainer" class="button-container">
   <!--<button class="btn faceT-button" style="width: 3%;" onclick="performAction('FaceTouch',78,79)"></button> -->
   <!--<button class="btn HeadT-button" style="width: 8%; margin-left: -5%; margin-top: 3%;" onclick="performAction('Head Tilt', 97, 105)"></button> -->
 
@@ -670,6 +670,11 @@ patientCheckbox.addEventListener('change', function() {
         
     // Function to update the existing button with CSV data
     function updateButton(name, startTime, endTime) {
+        // add this for each button with style
+       let btn = document.createElement("button");
+       btn.innerHTML = name + startTime;
+       const buttonContainer = document.getElementById("buttonContainer");
+       buttonContainer.appendChild(btn);
       const existingButton = document.querySelector(`button[data-name="${name}"]`);
       if (existingButton) {
         const buttonWidth = ((endTime - startTime) / videoPlayer.duration) * 100;
