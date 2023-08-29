@@ -1,0 +1,257 @@
+    /* ...Existing CSS styles... */
+
+  .hyper-link {
+  display: grid;
+  margin-left: 10%;
+  margin-top: 2%;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  }
+
+  .elements
+  {
+    text-decoration-color: #ff0000;
+  }
+    .crying-button {
+      /* float: left; */
+      height: 30px;
+      background-color: #ff0000;
+      color: #fff;
+      }
+
+      .lipScratch-button {
+        height: 30px;
+        background-color: burlywood;
+        color: #fff;
+      }
+  
+      .neckTouch-button {
+        height: 30px;
+        background-color: darkcyan;
+        color: #fff;
+      }
+  
+      .faceTouch-button {
+        height: 30px;
+        background-color: darksalmon;
+        color: #fff;
+      }
+  
+      .hairScratch-button {
+        height: 30px;
+        background-color: cadetblue;
+        color: #fff;
+      }
+  
+      .laugh-button {
+        height: 30px;
+        background-color: rgb(4, 239, 247);
+        color: #fff;
+      }
+  
+      .headScratch-button {
+        height: 30px;
+        background-color: rgb(231, 133, 5);
+        color: #fff;
+      }
+  
+      .headTouch-button {
+        height: 30px;
+        background-color: rgb(182, 231, 5);
+        color: #fff;
+      }
+      .headTilt-button {
+        height: 30px;
+        background-color: rgb(182, 231, 5);
+        color: #fff;
+      }
+
+      .armRub-button {
+        height: 30px;
+        background-color: #ffd700; 
+        color: #fff;
+      }
+
+      .eyeRub-button {
+        height: 30px;
+        background-color: aqua;
+        color: #fff;
+      }
+  
+
+
+
+    .lipS-button {
+      background-color: burlywood;
+      color: #fff;
+    }
+
+    .neckT-button {
+      background-color: darkcyan;
+      color: #fff;
+    }
+
+    .faceT-button {
+      background-color: darksalmon;
+      color: #fff;
+      position: relative;
+      top: 20%;
+
+    }
+
+    .hairS-button {
+      background-color: cadetblue;
+      color: #fff;
+    }
+
+    .Laugh-button {
+      background-color: rgb(4, 239, 247);
+      color: #fff;
+    }
+
+    .HeadS-button {
+      background-color: rgb(231, 133, 5);
+      color: #fff;
+    }
+
+    .HeadT-button {
+      background-color: rgb(182, 231, 5);
+      color: #fff;
+    }
+
+
+
+
+
+
+.timeline {
+      width: 700px;
+      height: 10px;
+      background-color: #f2f2f2;
+      margin: 0 auto 2%;
+      position: relative;
+      margin-top: -180px;
+    }
+
+
+  .timeline-marker {
+  width: 5px;
+  height: 20px;
+  background-color: #333;
+  cursor: pointer;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+
+
+    /* Added CSS for image positioning */
+    .image-container {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .image-container img {
+      height: 200px; /* Adjust the height as per your requirement */
+      object-fit: cover;
+    }
+
+    .image-container .inria-image {
+      position: center;
+      top: auto;
+      left: auto;
+      width: auto; /* Adjust the width as per your requirement */
+      height: auto; /* Maintain the aspect ratio */
+    }
+
+    .image-container .dfki-image {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150px; /* Adjust the width as per your requirement */
+      height: auto; /* Maintain the aspect ratio */
+    }
+
+    .image-container .patient-Clinician-image {
+  position: absolute;
+  bottom: -100px; /* Adjust the bottom position as needed to move it to the bottom */
+  right: 10px; /* Adjust the right position as needed */
+  width: 150px; /* Adjust the width as per your requirement */
+  height: auto; /* Maintain the aspect ratio */
+}
+
+.image-container .med-logo-image {
+  position: absolute;
+  bottom: -600px; /* Adjust the bottom position as needed */
+  left: 10px; /* Adjust the left position as needed */
+  width: 150px; /* Adjust the width as per your requirement */
+  height: auto; /* Maintain the aspect ratio */
+}
+
+    /* Added CSS for custom colors */
+    .arm-rub-row {
+      background-color: #ffd700; /* Use the desired color for Arm Rub */
+    }
+
+    .crying-row {
+      background-color: #ff0000; /* Use the desired color for Crying */
+    }
+
+    .Eye-Rub-row {
+      background-color: aqua;
+    }
+
+    .Neck-Touch-row {
+      background-color: darkcyan;
+    }
+
+    .Face-Touch-row{
+      background-color: darksalmon;
+    }
+
+    .Lips-Scratch-row{
+      background-color: burlywood;
+    }
+
+    .Hair-Scratch-row{
+      background-color: cadetblue;
+    }
+
+.video{
+ width: 720px;
+ height: 480px;
+ top: 30px;
+  display: block;
+  margin: 0 auto;
+}
+
+.button-container {
+  /* display: block; */
+  /* margin-left: 20%; */
+  margin: 0 auto;
+  width: 720px;
+}
+
+    .crying-2-row {
+      background-color: #00ff00; /* Use the desired color for Crying 2 */
+    }
+
+    /* Added CSS for the CSV button */
+    .csv-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .center{
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+      height: 60%;
+      margin-top: 5%;
+    }

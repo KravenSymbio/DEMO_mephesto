@@ -1,0 +1,26 @@
+Button Label,Start Time,End Time
+Crying,50,300
+Crying,700,820
+LipScratch,200,300
+LipScratch,350,453
+HairScratch,230,300
+HairScratch,400,453
+FaceTouch,200,300
+FaceTouch,350,453
+EyeRub,100,300
+EyeRub,350,453
+NeckTouch,200,300
+NeckTouch,350,453
+ArmRub,200,300
+ArmRub,350,453
+HeadTilt,200,300
+HeadTilt,123,180
+HeadTilt,400,643
+HeadScratch,480,540
+HeadScratch,350,453
+HeadScratch,20,50
+Laugh,200,300
+Laugh,512,540
+Laugh,350,453
+Laugh,641,643
+
