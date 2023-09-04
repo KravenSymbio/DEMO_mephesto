@@ -74,8 +74,12 @@
 
 
 <!--dictionry {"id": [1,2,3,4], "behavior": [...],} -->
+<div id="buttonContainers">
 
-<div id="cryingButtons" class="button-container">
+
+</div>
+
+<!-- <div id="cryingButtons" class="button-container">
   </div>
 <div id="headScratchButtons" class="button-container">
   </div>
@@ -94,7 +98,7 @@
   <div id="laughButtons" class="button-container">
   </div>
   <div id="faceTouchButtons" class="button-container">
-  </div>
+  </div> -->
   
 
     <!-- Add more buttons for other features -->
@@ -357,10 +361,12 @@ patientCheckbox.addEventListener('change', function() {
         console.log(contents)
         const rows = contents.split('\n');
         rows.shift(); // Remove the header row
-        lastEndTimes = [0,0,0,0,0,0,0,0,0,0];
         rows.forEach(row => {
-          const [name, startTime, endTime] = row.split(',');
-          lastEndTimes = updateButton(name, Number(startTime), Number(endTime), lastEndTimes);
+          const splitted = row.split(',');
+          const startTime = splitted[1];
+          const endTime = splitted[2];
+          const name = splitted[3]; 
+          updateButton(name, Number(startTime), Number(endTime));
         });
       };
 
@@ -369,130 +375,186 @@ patientCheckbox.addEventListener('change', function() {
 
     }
 
-  function getRandomColor() {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
+
+colorMap = {};
+lastEndTime = {};
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.round(Math.random() * 15)];
+    }
+    console.log(color);
+    return color;
 }
 
-        
-    // Function to update the existing button with CSV data
-    function updateButton(name, startTime, endTime, lastEndTimes) {
-      //console.log(name + ' ' + startTime + ' ' + endTime + '');
-      console.log('lastEndTimes: ' + lastEndTimes);
-      let btn = document.createElement("button");
-      width = ((endTime - startTime)/ videoPlayer.duration) * 100;
-      btn.style.width = width + "%";
-      btn.id = name + startTime;
 
-      btn.onclick = function() {jumpToPosition(startTime)};
-      switch (name) {
-        case 'Crying':
-          btn.classList.add("crying-button");
-          marginLeft = ((startTime - lastEndTimes[0] )/ videoPlayer.duration) * 100;
-          btn.style.marginLeft = marginLeft + "%";
-          lastEndTimes[0] = endTime;
-          const buttonContainer = document.getElementById("cryingButtons");
-          buttonContainer.appendChild(btn);
-          return lastEndTimes;
-        break;
-        
-        case 'HeadScratch':
-          btn.classList.add("headScratch-button");
-          marginLeft = ((startTime - lastEndTimes[1] )/ videoPlayer.duration) * 100;
-          btn.style.marginLeft = marginLeft + "%";
-          lastEndTimes[1] = endTime;
-          const headSButtonContainer = document.getElementById("headScratchButtons");
-          headSButtonContainer.appendChild(btn);
-          return lastEndTimes;
-        break;
-        
-        case 'HeadTilt':
-          btn.classList.add("headTilt-button");
-          marginLeft = ((startTime - lastEndTimes[2] )/ videoPlayer.duration) * 100;
-          btn.style.marginLeft = marginLeft + "%";
-          lastEndTimes[2] = endTime;
-          const headTButtonContainer = document.getElementById("headTiltButtons");
-          headTButtonContainer.appendChild(btn);
-          return lastEndTimes;
-        break;
-        
-        case 'ArmRub':
-          btn.classList.add("armRub-button");
-          marginLeft = ((startTime - lastEndTimes[3] )/ videoPlayer.duration) * 100;
-          btn.style.marginLeft = marginLeft + "%";
-          lastEndTimes[3] = endTime;
-          const armRButtonContainer = document.getElementById("armRubButtons");
-          armRButtonContainer.appendChild(btn);
-          return lastEndTimes;
-        break;
-        
-        case 'NeckTouch':
-          btn.classList.add("neckTouch-button");
-          marginLeft = ((startTime - lastEndTimes[4] )/ videoPlayer.duration) * 100;
-          btn.style.marginLeft = marginLeft + "%";
-          lastEndTimes[4] = endTime;
-          const neckTButtonContainer = document.getElementById("neckTouchButtons");
-          neckTButtonContainer.appendChild(btn);
-          return lastEndTimes;
-        break;
-        
-        case 'EyeRub':
-          btn.classList.add("eyeRub-button");
-          marginLeft = ((startTime - lastEndTimes[5] )/ videoPlayer.duration) * 100;
-          btn.style.marginLeft = marginLeft + "%";
-          lastEndTimes[5] = endTime;
-          const eyeRButtonContainer = document.getElementById("eyeRubButtons");
-          eyeRButtonContainer.appendChild(btn);
-          return lastEndTimes;
-        break;
-        
-        case 'LipScratch':
-          btn.classList.add("lipScratch-button");
-          marginLeft = ((startTime - lastEndTimes[6] )/ videoPlayer.duration) * 100;
-          btn.style.marginLeft = marginLeft + "%";
-          lastEndTimes[6] = endTime;
-          const lipsSButtonContainer = document.getElementById("lipScratchButtons");
-          lipsSButtonContainer.appendChild(btn);
-          return lastEndTimes;
+function getOrCreateButtonContainer (name, displayName) {
+  if (document.getElementById(name) == null) {
+    colorMap[name] = getRandomColor();
+    lastEndTime[name] = 0.0;
+    console.log("creating element for " + name);
+    let buttonContainer = document.createElement('div');
+    let buttonContainerWrapper = document.createElement('div');
+    let text = document.createElement('div');
+    text.textContent = displayName;
+    text.style.marginLeft = "50px";
+    text.style.color = colorMap[name];
+    buttonContainerWrapper.appendChild(text);
+    buttonContainer.id = name;
+    buttonContainer.classList.add('button-container');
+    buttonContainerWrapper.appendChild(buttonContainer);
+    document.getElementById("buttonContainers").appendChild(buttonContainerWrapper);
+    
+    
+  }
+  return document.getElementById(name);
+}
+
+
+
+
+function updateButton(name, startTime, endTime) {
+  if (name == null || name.length == 0) {
+    return;
+  }
+  let duration = videoPlayer.duration;
+  // for testing only
+  //duration = 6000;
+  var safeName = name.replace(/[^A-Z0-9]/ig, "_");
+  console.log(name + " goes to " + safeName);
+  let buttonContainer = getOrCreateButtonContainer(safeName, name);
+  let color = colorMap[safeName];
+  let btn = document.createElement("button");
+  width = ((endTime - startTime)/duration * 100);
+  btn.style.width = width + "%";
+  btn.style.minWidth = "1px";
+  btn.id = safeName + startTime;
+  btn.style.height = "30px";
+  btn.style.color = "#fff";
+  btn.style.backgroundColor = colorMap[safeName];
+  marginLeft = ((startTime - lastEndTime[safeName] )/ duration) * 100
+  btn.onclick = function() {jumpToPosition(startTime)};
+  btn.style.marginLeft = marginLeft + "%";
+  buttonContainer.appendChild(btn);
   
-        break;
-        case 'HairScratch':
-          btn.classList.add("hairScratch-button");
-          marginLeft = ((startTime - lastEndTimes[7] )/ videoPlayer.duration) * 100;
-          btn.style.marginLeft = marginLeft + "%";
-          lastEndTimes[7] = endTime;
-          const hairSButtonContainer = document.getElementById("hairScratchButtons");
-          hairSButtonContainer.appendChild(btn);
-          return lastEndTimes;
-        break;
-        case 'FaceTouch':
-          btn.classList.add("faceTouch-button");
-          marginLeft = ((startTime - lastEndTimes[8] )/ videoPlayer.duration) * 100;
-          btn.style.marginLeft = marginLeft + "%";
-          lastEndTimes[8] = endTime;
-          const faceTButtonContainer = document.getElementById("faceTouchButtons");
-          faceTButtonContainer.appendChild(btn);
-          return lastEndTimes;
-        break;
-        case 'Laugh':
-          btn.classList.add("laugh-button");
-          marginLeft = ((startTime - lastEndTimes[9] )/ videoPlayer.duration) * 100;
-          btn.style.marginLeft = marginLeft + "%";
-          lastEndTimes[9] = endTime;
-          const laughButtonContainer = document.getElementById("laughButtons");
-          laughButtonContainer.appendChild(btn);
-          return lastEndTimes;
-        break;
-        console.log('lastEndTimes: ' + lastEndTimes);
-        return lastEndTimes;
-      }
+  lastEndTime[safeName] = endTime;
+}   
+    // Function to update the existing button with CSV data
+    // function updateButton(name, startTime, endTime, lastEndTimes) {
+    //   //console.log(name + ' ' + startTime + ' ' + endTime + '');
+    //   console.log('lastEndTimes: ' + lastEndTimes);
+    //   let btn = document.createElement("button");
+    //   width = ((endTime - startTime)/ videoPlayer.duration) * 100;
+    //   btn.style.width = width + "%";
+    //   btn.id = name + startTime;
+
+    //   btn.onclick = function() {jumpToPosition(startTime)};
+    //   switch (name) {
+    //     case 'Crying':
+    //       btn.classList.add("crying-button");
+    //       marginLeft = ((startTime - lastEndTimes[0] )/ videoPlayer.duration) * 100;
+    //       btn.style.marginLeft = marginLeft + "%";
+    //       lastEndTimes[0] = endTime;
+    //       const buttonContainer = document.getElementById("cryingButtons");
+    //       buttonContainer.appendChild(btn);
+    //       return lastEndTimes;
+    //     break;
+        
+    //     case 'HeadScratch':
+    //       btn.classList.add("headScratch-button");
+    //       marginLeft = ((startTime - lastEndTimes[1] )/ videoPlayer.duration) * 100;
+    //       btn.style.marginLeft = marginLeft + "%";
+    //       lastEndTimes[1] = endTime;
+    //       const headSButtonContainer = document.getElementById("headScratchButtons");
+    //       headSButtonContainer.appendChild(btn);
+    //       return lastEndTimes;
+    //     break;
+        
+    //     case 'HeadTilt':
+    //       btn.classList.add("headTilt-button");
+    //       marginLeft = ((startTime - lastEndTimes[2] )/ videoPlayer.duration) * 100;
+    //       btn.style.marginLeft = marginLeft + "%";
+    //       lastEndTimes[2] = endTime;
+    //       const headTButtonContainer = document.getElementById("headTiltButtons");
+    //       headTButtonContainer.appendChild(btn);
+    //       return lastEndTimes;
+    //     break;
+        
+    //     case 'ArmRub':
+    //       btn.classList.add("armRub-button");
+    //       marginLeft = ((startTime - lastEndTimes[3] )/ videoPlayer.duration) * 100;
+    //       btn.style.marginLeft = marginLeft + "%";
+    //       lastEndTimes[3] = endTime;
+    //       const armRButtonContainer = document.getElementById("armRubButtons");
+    //       armRButtonContainer.appendChild(btn);
+    //       return lastEndTimes;
+    //     break;
+        
+    //     case 'NeckTouch':
+    //       btn.classList.add("neckTouch-button");
+    //       marginLeft = ((startTime - lastEndTimes[4] )/ videoPlayer.duration) * 100;
+    //       btn.style.marginLeft = marginLeft + "%";
+    //       lastEndTimes[4] = endTime;
+    //       const neckTButtonContainer = document.getElementById("neckTouchButtons");
+    //       neckTButtonContainer.appendChild(btn);
+    //       return lastEndTimes;
+    //     break;
+        
+    //     case 'EyeRub':
+    //       btn.classList.add("eyeRub-button");
+    //       marginLeft = ((startTime - lastEndTimes[5] )/ videoPlayer.duration) * 100;
+    //       btn.style.marginLeft = marginLeft + "%";
+    //       lastEndTimes[5] = endTime;
+    //       const eyeRButtonContainer = document.getElementById("eyeRubButtons");
+    //       eyeRButtonContainer.appendChild(btn);
+    //       return lastEndTimes;
+    //     break;
+        
+    //     case 'LipScratch':
+    //       btn.classList.add("lipScratch-button");
+    //       marginLeft = ((startTime - lastEndTimes[6] )/ videoPlayer.duration) * 100;
+    //       btn.style.marginLeft = marginLeft + "%";
+    //       lastEndTimes[6] = endTime;
+    //       const lipsSButtonContainer = document.getElementById("lipScratchButtons");
+    //       lipsSButtonContainer.appendChild(btn);
+    //       return lastEndTimes;
+  
+    //     break;
+    //     case 'HairScratch':
+    //       btn.classList.add("hairScratch-button");
+    //       marginLeft = ((startTime - lastEndTimes[7] )/ videoPlayer.duration) * 100;
+    //       btn.style.marginLeft = marginLeft + "%";
+    //       lastEndTimes[7] = endTime;
+    //       const hairSButtonContainer = document.getElementById("hairScratchButtons");
+    //       hairSButtonContainer.appendChild(btn);
+    //       return lastEndTimes;
+    //     break;
+    //     case 'FaceTouch':
+    //       btn.classList.add("faceTouch-button");
+    //       marginLeft = ((startTime - lastEndTimes[8] )/ videoPlayer.duration) * 100;
+    //       btn.style.marginLeft = marginLeft + "%";
+    //       lastEndTimes[8] = endTime;
+    //       const faceTButtonContainer = document.getElementById("faceTouchButtons");
+    //       faceTButtonContainer.appendChild(btn);
+    //       return lastEndTimes;
+    //     break;
+    //     case 'Laugh':
+    //       btn.classList.add("laugh-button");
+    //       marginLeft = ((startTime - lastEndTimes[9] )/ videoPlayer.duration) * 100;
+    //       btn.style.marginLeft = marginLeft + "%";
+    //       lastEndTimes[9] = endTime;
+    //       const laughButtonContainer = document.getElementById("laughButtons");
+    //       laughButtonContainer.appendChild(btn);
+    //       return lastEndTimes;
+    //     break;
+    //     console.log('lastEndTimes: ' + lastEndTimes);
+    //     return lastEndTimes;
+    //   }
 
       
-    }
+    // }
 
    
     //     // add this for each button with style
