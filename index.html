@@ -65,7 +65,7 @@
   </table>
 </div>
 <div class="video">
-  <video id="frenchvideo" src="demo.mp4" class="video" width="480px" height="480px" controls>
+  <video id="frenchvideo" src="003BM-0.mp4" class="video" width="480px" height="480px" controls>
     <track default src="\Clinician_captions.vtt" kind="subtitles" srclang="fr" label="French">
   </video>
 </div>
@@ -108,20 +108,19 @@
 
 
 
- <div class="hyper-link"> 
+<div class="hyper-link"> 
 
-     <a href="#btn neckT-button"  style="color: darksalmon;">Face Touch</a> 
-     <a href="#btn neckT-button"  style="color: #ff0000;">Crying</a>  
-     <a href="#btn neckT-button"  style="color: rgb(4, 239, 247);">Laugh</a> 
-     <a href="#btn neckT-button"  style="color: rgb(231, 133, 5);">Head Scratch</a> 
-     <a href="#btn neckT-button"  style="color: rgb(182, 231, 5);">Head Tilt</a> 
-     <a href="#btn neckT-button"  style="color: burlywood;">Lip Scratch</a> 
-     <a href="#btn neckT-button"  style="color: darkcyan;">Neck Touch</a> 
+     <a href="#"  style="color: rgb(255, 255, 255);">F</a> 
+     <a href="#"  style="color: rgb(255, 255, 255);">Crying</a>  
+     <a href="#"  style="color:rgb(255, 255, 255);">Laugh</a> 
+     <a href="#"  style="color:rgb(255, 255, 255);">Head Scratch</a> 
+     <a href="#"  style="color:rgb(255, 255, 255);">Head Tilt</a> 
+     <a href="#"  style="color:rgb(255, 255, 255);">Lip Scratch</a> 
+     <a href="#"  style="color:rgb(255, 255, 255)">Neck Touch</a> 
     
-     <a href="#btn neckT-button"  style="color: cadetblue;">Hair Scratch</a> 
+     <a href="#"  style="color:rgb(255, 255, 255);">Hair Scratch</a> 
 
 
-   </div> 
 </div>
 <div class="timeline" id="videoTimeline">
   <div class="timeline-marker">
@@ -130,6 +129,7 @@
 </div>
 <!-- Added CSV button -->
 <button class="csv-button" onclick="handleCSVFile()">Upload CSV</button>
+  <div id="featureCheckboxes" style="display: none;">
 
 <script>
   const buttonContainer = document.querySelector('.button-container');
@@ -340,8 +340,7 @@ patientCheckbox.addEventListener('change', function() {
   }
 });
 
-  // Handle CSV file upload
-  function handleCSVFile() {
+function handleCSVFile() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.csv';
@@ -361,19 +360,48 @@ patientCheckbox.addEventListener('change', function() {
         console.log(contents)
         const rows = contents.split('\n');
         rows.shift(); // Remove the header row
+        // Create checkboxes based on the CSV data
+        const checkboxesContainer = document.getElementById('featureCheckboxes');
+        checkboxesContainer.innerHTML = ''; // Clear any previous checkboxes
+        
         rows.forEach(row => {
           const splitted = row.split(',');
-          const startTime = splitted[1];
-          const endTime = splitted[2];
-          const name = splitted[3]; 
-          updateButton(name, Number(startTime), Number(endTime));
+          const name = splitted[3];
+          const startTime = Number(splitted[1]);
+          const endTime = Number(splitted[2]);
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.id = `checkbox_${name}`;
+          checkbox.value = name;
+          checkbox.addEventListener('change', function() {
+            toggleFeatureButtons(name, this.checked);
+          });
+
+          const label = document.createElement('label');
+          label.textContent = name;
+          label.htmlFor = `checkbox_${name}`;
+
+          checkboxesContainer.appendChild(checkbox);
+          checkboxesContainer.appendChild(label);
+          checkboxesContainer.appendChild(document.createElement('br'));
         });
+
+        checkboxesContainer.style.display = 'block'; // Show the checkboxes
       };
 
       reader.readAsText(file);
-
-
     }
+
+    // Function to toggle the visibility of feature buttons
+    function toggleFeatureButtons(name, show) {
+      const featureButton = document.getElementById(name);
+      if (featureButton) {
+        featureButton.style.display = show ? 'inline-block' : 'none';
+      }
+    }
+
+    // ... (your existing JavaScript code) ...
 
 
 colorMap = {};
@@ -414,7 +442,6 @@ function getOrCreateButtonContainer (name, displayName) {
 
 
 
-
 function updateButton(name, startTime, endTime) {
   if (name == null || name.length == 0) {
     return;
@@ -441,7 +468,68 @@ function updateButton(name, startTime, endTime) {
   
   lastEndTime[safeName] = endTime;
 }   
-    // Function to update the existing button with CSV data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Function to update the existing button with CSV data
     // function updateButton(name, startTime, endTime, lastEndTimes) {
     //   //console.log(name + ' ' + startTime + ' ' + endTime + '');
     //   console.log('lastEndTimes: ' + lastEndTimes);
@@ -772,3 +860,6 @@ audio {
  
 </body>
 </html>
+
+
+
