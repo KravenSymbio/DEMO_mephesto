@@ -361,14 +361,17 @@ function handleCSVFile() {
         const rows = contents.split('\n');
         rows.shift(); // Remove the header row
         // Create checkboxes based on the CSV data
+      
         const checkboxesContainer = document.getElementById('featureCheckboxes');
         checkboxesContainer.innerHTML = ''; // Clear any previous checkboxes
-        
+
         rows.forEach(row => {
           const splitted = row.split(',');
           const name = splitted[3];
           const startTime = Number(splitted[1]);
           const endTime = Number(splitted[2]);
+          
+          updateButton(name, startTime,endTime);
 
           const checkbox = document.createElement('input');
           checkbox.type = 'checkbox';
@@ -417,6 +420,21 @@ function getRandomColor() {
     return color;
 }
 
+function checkBoxHide(name) {
+    safeName = name.replace(/[^A-Z0-9]/ig, "_");
+    elementId = safeName + "_wrapper";
+    element = document.getElementById(elementId)
+    element.style.display = "none";
+}
+
+function checkBoxShow(name) {
+    safeName = name.replace(/[^A-Z0-9]/ig, "_");
+    elementId = safeName + "_wrapper";
+    element = document.getElementById(elementId)
+    element.style.display = "";
+}
+
+
 
 function getOrCreateButtonContainer (name, displayName) {
   if (document.getElementById(name) == null) {
@@ -431,6 +449,7 @@ function getOrCreateButtonContainer (name, displayName) {
     text.style.color = colorMap[name];
     buttonContainerWrapper.appendChild(text);
     buttonContainer.id = name;
+    buttonContainerWrapper.id = name + "_wrapper";
     buttonContainer.classList.add('button-container');
     buttonContainerWrapper.appendChild(buttonContainer);
     document.getElementById("buttonContainers").appendChild(buttonContainerWrapper);
