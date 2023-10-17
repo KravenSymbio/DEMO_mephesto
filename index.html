@@ -352,57 +352,73 @@ function handleCSVFile() {
 
   // Read the CSV file and create buttons based on its contents
   function handleFileSelect(event) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
+  const file = event.target.files[0];
+  const reader = new FileReader();
 
-      reader.onload = function(e) {
-        const contents = e.target.result;
-        console.log(contents)
-        const rows = contents.split('\n');
-        rows.shift(); // Remove the header row
-        // Create checkboxes based on the CSV data
-      
-        const checkboxesContainer = document.getElementById('featureCheckboxes');
-        checkboxesContainer.innerHTML = ''; // Clear any previous checkboxes
+  // Create a Set to store unique feature names
+  const uniqueFeatures = new Set();
 
-        rows.forEach(row => {
-          const splitted = row.split(',');
-          const name = splitted[3];
-          const startTime = Number(splitted[1]);
-          const endTime = Number(splitted[2]);
-          
-          updateButton(name, startTime,endTime);
+  reader.onload = function (e) {
+    const contents = e.target.result;
+    console.log(contents);
+    const rows = contents.split('\n');
+    rows.shift(); // Remove the header row
+    // Create checkboxes based on the CSV data
 
-          const checkbox = document.createElement('input');
-          checkbox.type = 'checkbox';
-          checkbox.id = `checkbox_${name}`;
-          checkbox.value = name;
-          checkbox.addEventListener('change', function() {
-            toggleFeatureButtons(name, this.checked);
-          });
+    const checkboxesContainer = document.getElementById('featureCheckboxes');
+    checkboxesContainer.innerHTML = ''; // Clear any previous checkboxes
 
-          const label = document.createElement('label');
-          label.textContent = name;
-          label.htmlFor = `checkbox_${name}`;
+    rows.forEach(row => {
+      const splitted = row.split(',');
+      const name = splitted[3];
+      const startTime = Number(splitted[1]);
+      const endTime = Number(splitted[2]);
 
-          checkboxesContainer.appendChild(checkbox);
-          checkboxesContainer.appendChild(label);
-          checkboxesContainer.appendChild(document.createElement('br'));
+      // Check if the feature name is already in the Set, if not, process it
+      if (!uniqueFeatures.has(name)) {
+        updateButton(name, startTime, endTime);
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `checkbox_${name}`;
+        checkbox.value = name;
+        checkbox.addEventListener('change', function () {
+          toggleFeatureButtons(name, this.checked);
         });
 
-        checkboxesContainer.style.display = 'block'; // Show the checkboxes
-      };
+        const label = document.createElement('label');
+        label.textContent = name;
+        label.htmlFor = `checkbox_${name}`;
 
-      reader.readAsText(file);
-    }
+        checkboxesContainer.appendChild(checkbox);
+        checkboxesContainer.appendChild(label);
+        checkboxesContainer.appendChild(document.createElement('br'));
+
+        // Add the feature name to the Set to mark it as processed
+        uniqueFeatures.add(name);
+      }
+    });
+
+    checkboxesContainer.style.display = 'block'; // Show the checkboxes
+  };
+
+  reader.readAsText(file);
+}
+
 
     // Function to toggle the visibility of feature buttons
     function toggleFeatureButtons(name, show) {
-      const featureButton = document.getElementById(name);
-      if (featureButton) {
-        featureButton.style.display = show ? 'inline-block' : 'none';
-      }
+    const safeName = name.replace(/[^A-Z0-9]/ig, "_");
+    const elementId = safeName + "_wrapper";
+    const element = document.getElementById(elementId);
+
+    if (element) {
+        element.style.display = show ? 'inline-block' : 'none';
     }
+    console.log(elementId)
+    return elementId;
+}
+
 
     // ... (your existing JavaScript code) ...
 
@@ -423,14 +439,14 @@ function getRandomColor() {
 function checkBoxHide(name) {
     safeName = name.replace(/[^A-Z0-9]/ig, "_");
     elementId = safeName + "_wrapper";
-    element = document.getElementById(elementId)
+    element = document.getElementsByName(name)
     element.style.display = "none";
 }
 
 function checkBoxShow(name) {
     safeName = name.replace(/[^A-Z0-9]/ig, "_");
     elementId = safeName + "_wrapper";
-    element = document.getElementById(elementId)
+    element = document.getElementsByName(name)
     element.style.display = "";
 }
 
@@ -489,6 +505,10 @@ function updateButton(name, startTime, endTime) {
 }   
 
 
+// Call checkBoxHide function with a specific featureName
+
+// Call the checkBoxHide function with a name
+console.log (checkBoxHide(featureButton));
 
 
 
