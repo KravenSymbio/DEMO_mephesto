@@ -7,22 +7,35 @@
 </head>
 <body>
   <div class="image-container">
+    <!-- INRIA Image-->
     <img src="inria.png" alt="INRIA Image">
+    <!-- DFKI Image-->
     <img src="DFKI.png" alt="DFKI Image">
+    <!--Patient Cinician Image-->
     <img src="patient_Clinician.png" alt="Patient Clinician Image">
+    <!-- The Medical Logo-->
     <img src="med_logo.jpg" alt="Med Logo Image" class="med-logo-image">
   </div>
 
 <div class="container">
+   <!-- Container div that holds the table -->
   <table class="center">
+    <!-- A centered table with class 'center' -->
     <thead>
+      <!-- Table header -->
       <tr>
+        <!-- Table row in the header section -->
         <th></th>
         <th>Clinician</th>
+        <!-- Header cell for Clinician column -->
         <th>Patient</th>
+        <!-- Header cell for Patient column -->
+
       </tr>
     </thead>
     <tbody>
+      <!-- Table body -->
+       <!-- Row for "Crying" -->
       <tr class="crying-row">
         <td>Crying</td>
         <td><input type="checkbox" id="clinicianCryingCheckbox"></td>
@@ -65,7 +78,9 @@
   </table>
 </div>
 <div class="video">
+  <!--Source for the video-->
   <video id="frenchvideo" src="003BM-0.mp4" class="video" width="480px" height="480px" controls>
+    <!-- Source for the subtitles-->
     <track default src="\Clinician_captions.vtt" kind="subtitles" srclang="fr" label="French">
   </video>
 </div>
@@ -73,7 +88,7 @@
 
 
 
-<!--dictionry {"id": [1,2,3,4], "behavior": [...],} -->
+
 <div id="buttonContainers">
 
 
@@ -107,7 +122,7 @@
 <!--<div class="button-timeline-container">-->
 
 
-
+<!--Use to Cover Glichted Features-->
 <div class="hyper-link"> 
 
      <a href="#"  style="color: rgb(255, 255, 255);">F</a> 
@@ -155,9 +170,16 @@ features.forEach(feature => {
 </script>
 
 <script>
+  // Get a reference to the video player element with the ID 'frenchvideo'
   const videoPlayer = document.getElementById('frenchvideo');
+ 
+  // Get a reference to the timeline element with the ID 'videoTimeline'
   const timeline = document.getElementById('videoTimeline');
+
+  // Find the element with the class 'timeline-marker' within the 'timeline' element
   const timelineMarker = timeline.querySelector('.timeline-marker');
+
+  // Find the element with the class 'tooltip-text' within the 'timeline' element
   const tooltipText = timeline.querySelector('.tooltip-text');
 
   // Update the position of the timeline marker based on the video's current time
@@ -176,17 +198,31 @@ features.forEach(feature => {
   });
 
   timelineMarker.addEventListener('mouseenter', function() {
-    const currentTime = videoPlayer.currentTime;
-    const feature = features.find(f => currentTime >= f.startTime && currentTime <= f.endTime);
-    if (feature) {
-      tooltipText.textContent = `${feature.name} (${feature.startTime}-${feature.endTime})`;
-      tooltipText.style.display = 'block';
-    }
-  });
+  // When the mouse enters the 'timelineMarker' element
 
-  timelineMarker.addEventListener('mouseleave', function() {
-    tooltipText.style.display = 'none';
-  });
+  // Get the current time of the video player
+  const currentTime = videoPlayer.currentTime;
+
+  // Find a feature that matches the current time within the 'features' array
+  const feature = features.find(f => currentTime >= f.startTime && currentTime <= f.endTime);
+
+  // If a matching feature is found
+  if (feature) {
+    // Set the text content of the 'tooltipText' element to display the feature name and time range
+    tooltipText.textContent = `${feature.name} (${feature.startTime}-${feature.endTime})`;
+
+    // Display the 'tooltipText' element by setting its style to 'block'
+    tooltipText.style.display = 'block';
+  }
+});
+
+timelineMarker.addEventListener('mouseleave', function() {
+  // When the mouse leaves the 'timelineMarker' element
+
+  // Hide the 'tooltipText' element by setting its style to 'none'
+  tooltipText.style.display = 'none';
+});
+
 
   // Play the video
   function playVideo() {
@@ -341,12 +377,24 @@ patientCheckbox.addEventListener('change', function() {
 });
 
 function handleCSVFile() {
+    // Create a new 'input' element (an HTML file input)
     const input = document.createElement('input');
+    
+    // Set the input type to 'file', indicating that it's meant for selecting files
     input.type = 'file';
+    
+    // Set the 'accept' attribute to '.csv', which restricts file selection to CSV files
     input.accept = '.csv';
+    
+    // Assign an 'onchange' event handler to the input element
+    // When a file is selected via the input element, the 'handleFileSelect' function will be called
     input.onchange = handleFileSelect;
+    
+    // Programmatically trigger a click event on the input element
+    // This will open the system's file dialog for the user to select a CSV file
     input.click();
-  }
+}
+
 
 
 
@@ -420,13 +468,14 @@ function handleCSVFile() {
 }
 
 
-    // ... (your existing JavaScript code) ...
 
 
 colorMap = {};
 lastEndTime = {};
 
-function getRandomColor() {
+
+//For Generating random colors for the features
+function getRandomColor() { 
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
     for (var i = 0; i < 6; i++ ) {
@@ -436,14 +485,17 @@ function getRandomColor() {
     return color;
 }
 
-function checkBoxHide(name) {
+// For Hiding a selected feature
+function checkBoxHide(name) { 
     safeName = name.replace(/[^A-Z0-9]/ig, "_");
     elementId = safeName + "_wrapper";
     element = document.getElementsByName(name)
     element.style.display = "none";
 }
 
-function checkBoxShow(name) {
+
+//For Displaying a selected feature
+function checkBoxShow(name) { 
     safeName = name.replace(/[^A-Z0-9]/ig, "_");
     elementId = safeName + "_wrapper";
     element = document.getElementsByName(name)
@@ -452,57 +504,113 @@ function checkBoxShow(name) {
 
 
 
-function getOrCreateButtonContainer (name, displayName) {
+function getOrCreateButtonContainer(name, displayName) {
+  // Check if an element with the specified 'name' (ID) exists
   if (document.getElementById(name) == null) {
+    // If it doesn't exist, perform the following actions:
+
+    // Assign a random color to the 'name' in the 'colorMap' object
     colorMap[name] = getRandomColor();
+
+    // Initialize 'lastEndTime' for 'name' to 0.0
     lastEndTime[name] = 0.0;
+
+    // Log a message indicating that an element is being created for 'name'
     console.log("creating element for " + name);
+
+    // Create several HTML elements:
+
+    // 1. Create a <div> element to hold buttons
     let buttonContainer = document.createElement('div');
+    
+    // 2. Create a wrapper <div> for the button container
     let buttonContainerWrapper = document.createElement('div');
+
+    // 3. Create a <div> for displaying 'displayName' text
     let text = document.createElement('div');
+
+    // Set the text content of 'text' to 'displayName'
     text.textContent = displayName;
+
+    // Style the 'text' element with a left margin and a color based on the 'name'
     text.style.marginLeft = "50px";
     text.style.color = colorMap[name];
+
+    // Append the 'text' element to the 'buttonContainerWrapper'
     buttonContainerWrapper.appendChild(text);
+
+    // Set the 'id' of 'buttonContainer' to 'name'
     buttonContainer.id = name;
+
+    // Set the 'id' of 'buttonContainerWrapper' to 'name' + "_wrapper"
     buttonContainerWrapper.id = name + "_wrapper";
+
+    // Add a CSS class 'button-container' to 'buttonContainer'
     buttonContainer.classList.add('button-container');
-    buttonContainerWrapper.appendChild(buttonContainer);
+
+    // Append 'buttonContainerWrapper' to the element with the ID "buttonContainers" in the document
     document.getElementById("buttonContainers").appendChild(buttonContainerWrapper);
-    
-    
   }
+
+  // Finally, return the element with the 'name' as its ID (whether it was just created or already existed)
   return document.getElementById(name);
 }
 
 
 
+
 function updateButton(name, startTime, endTime) {
+  // Check if 'name' is null or an empty string
   if (name == null || name.length == 0) {
-    return;
+    return; // If so, exit the function early
   }
+
+  // Get the duration of the video (assumes a 'videoPlayer' variable exists)
   let duration = videoPlayer.duration;
-  // for testing only
-  //duration = 6000;
+  
+  // Uncomment this line for testing purposes only
+  // duration = 6000;
+
+  // Replace any characters that are not letters or numbers with underscores in 'name'
   var safeName = name.replace(/[^A-Z0-9]/ig, "_");
+
+  // Log a message showing the mapping between 'name' and 'safeName'
   console.log(name + " goes to " + safeName);
+
+  // Get or create a button container for 'safeName' and set its color
   let buttonContainer = getOrCreateButtonContainer(safeName, name);
   let color = colorMap[safeName];
+
+  // Create a new button element
   let btn = document.createElement("button");
-  width = ((endTime - startTime)/duration * 100);
+
+  // Calculate the button's width as a percentage of the video duration
+  width = ((endTime - startTime) / duration * 100);
   btn.style.width = width + "%";
   btn.style.minWidth = "1px";
+
+  // Set the button's ID
   btn.id = safeName + startTime;
+  
+  // Style the button's appearance
   btn.style.height = "30px";
   btn.style.color = "#fff";
   btn.style.backgroundColor = colorMap[safeName];
-  marginLeft = ((startTime - lastEndTime[safeName] )/ duration) * 100
-  btn.onclick = function() {jumpToPosition(startTime)};
+  
+  // Calculate and set the left margin for the button
+  marginLeft = ((startTime - lastEndTime[safeName]) / duration) * 100;
+
+  // Add an onclick event to the button, calling the 'jumpToPosition' function with 'startTime' as a parameter
+  btn.onclick = function() { jumpToPosition(startTime) };
   btn.style.marginLeft = marginLeft + "%";
+
+  // Append the button to the 'buttonContainer'
   buttonContainer.appendChild(btn);
   
+  // Update 'lastEndTime' for 'safeName' with 'endTime'
   lastEndTime[safeName] = endTime;
-}   
+}
+
 
 
 // Call checkBoxHide function with a specific featureName
@@ -512,231 +620,11 @@ console.log (checkBoxHide(featureButton));
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Function to update the existing button with CSV data
-    // function updateButton(name, startTime, endTime, lastEndTimes) {
-    //   //console.log(name + ' ' + startTime + ' ' + endTime + '');
-    //   console.log('lastEndTimes: ' + lastEndTimes);
-    //   let btn = document.createElement("button");
-    //   width = ((endTime - startTime)/ videoPlayer.duration) * 100;
-    //   btn.style.width = width + "%";
-    //   btn.id = name + startTime;
-
-    //   btn.onclick = function() {jumpToPosition(startTime)};
-    //   switch (name) {
-    //     case 'Crying':
-    //       btn.classList.add("crying-button");
-    //       marginLeft = ((startTime - lastEndTimes[0] )/ videoPlayer.duration) * 100;
-    //       btn.style.marginLeft = marginLeft + "%";
-    //       lastEndTimes[0] = endTime;
-    //       const buttonContainer = document.getElementById("cryingButtons");
-    //       buttonContainer.appendChild(btn);
-    //       return lastEndTimes;
-    //     break;
-        
-    //     case 'HeadScratch':
-    //       btn.classList.add("headScratch-button");
-    //       marginLeft = ((startTime - lastEndTimes[1] )/ videoPlayer.duration) * 100;
-    //       btn.style.marginLeft = marginLeft + "%";
-    //       lastEndTimes[1] = endTime;
-    //       const headSButtonContainer = document.getElementById("headScratchButtons");
-    //       headSButtonContainer.appendChild(btn);
-    //       return lastEndTimes;
-    //     break;
-        
-    //     case 'HeadTilt':
-    //       btn.classList.add("headTilt-button");
-    //       marginLeft = ((startTime - lastEndTimes[2] )/ videoPlayer.duration) * 100;
-    //       btn.style.marginLeft = marginLeft + "%";
-    //       lastEndTimes[2] = endTime;
-    //       const headTButtonContainer = document.getElementById("headTiltButtons");
-    //       headTButtonContainer.appendChild(btn);
-    //       return lastEndTimes;
-    //     break;
-        
-    //     case 'ArmRub':
-    //       btn.classList.add("armRub-button");
-    //       marginLeft = ((startTime - lastEndTimes[3] )/ videoPlayer.duration) * 100;
-    //       btn.style.marginLeft = marginLeft + "%";
-    //       lastEndTimes[3] = endTime;
-    //       const armRButtonContainer = document.getElementById("armRubButtons");
-    //       armRButtonContainer.appendChild(btn);
-    //       return lastEndTimes;
-    //     break;
-        
-    //     case 'NeckTouch':
-    //       btn.classList.add("neckTouch-button");
-    //       marginLeft = ((startTime - lastEndTimes[4] )/ videoPlayer.duration) * 100;
-    //       btn.style.marginLeft = marginLeft + "%";
-    //       lastEndTimes[4] = endTime;
-    //       const neckTButtonContainer = document.getElementById("neckTouchButtons");
-    //       neckTButtonContainer.appendChild(btn);
-    //       return lastEndTimes;
-    //     break;
-        
-    //     case 'EyeRub':
-    //       btn.classList.add("eyeRub-button");
-    //       marginLeft = ((startTime - lastEndTimes[5] )/ videoPlayer.duration) * 100;
-    //       btn.style.marginLeft = marginLeft + "%";
-    //       lastEndTimes[5] = endTime;
-    //       const eyeRButtonContainer = document.getElementById("eyeRubButtons");
-    //       eyeRButtonContainer.appendChild(btn);
-    //       return lastEndTimes;
-    //     break;
-        
-    //     case 'LipScratch':
-    //       btn.classList.add("lipScratch-button");
-    //       marginLeft = ((startTime - lastEndTimes[6] )/ videoPlayer.duration) * 100;
-    //       btn.style.marginLeft = marginLeft + "%";
-    //       lastEndTimes[6] = endTime;
-    //       const lipsSButtonContainer = document.getElementById("lipScratchButtons");
-    //       lipsSButtonContainer.appendChild(btn);
-    //       return lastEndTimes;
-  
-    //     break;
-    //     case 'HairScratch':
-    //       btn.classList.add("hairScratch-button");
-    //       marginLeft = ((startTime - lastEndTimes[7] )/ videoPlayer.duration) * 100;
-    //       btn.style.marginLeft = marginLeft + "%";
-    //       lastEndTimes[7] = endTime;
-    //       const hairSButtonContainer = document.getElementById("hairScratchButtons");
-    //       hairSButtonContainer.appendChild(btn);
-    //       return lastEndTimes;
-    //     break;
-    //     case 'FaceTouch':
-    //       btn.classList.add("faceTouch-button");
-    //       marginLeft = ((startTime - lastEndTimes[8] )/ videoPlayer.duration) * 100;
-    //       btn.style.marginLeft = marginLeft + "%";
-    //       lastEndTimes[8] = endTime;
-    //       const faceTButtonContainer = document.getElementById("faceTouchButtons");
-    //       faceTButtonContainer.appendChild(btn);
-    //       return lastEndTimes;
-    //     break;
-    //     case 'Laugh':
-    //       btn.classList.add("laugh-button");
-    //       marginLeft = ((startTime - lastEndTimes[9] )/ videoPlayer.duration) * 100;
-    //       btn.style.marginLeft = marginLeft + "%";
-    //       lastEndTimes[9] = endTime;
-    //       const laughButtonContainer = document.getElementById("laughButtons");
-    //       laughButtonContainer.appendChild(btn);
-    //       return lastEndTimes;
-    //     break;
-    //     console.log('lastEndTimes: ' + lastEndTimes);
-    //     return lastEndTimes;
-    //   }
-
-      
-    // }
-
-   
-    //     // add this for each button with style
-    //    let btn = document.createElement("button");
-    //    btn.innerHTML = name + startTime;
-    //    btn.dataset.name = name; // Store the name as a data attribute
-    //   btn.dataset.startTime = startTime;
-    //   btn.dataset.endTime = endTime;
-
-    //   // Set background color using the random color
-    //   btn.style.backgroundColor = getRandomColor();
-
-      
-       
-    //   const buttonContainer = document.getElementById("buttonContainer");
-      
-      
-    //   // Calculate the horizontal position based on the start time and timeline width
-    //   const timeline = document.querySelector(".timeline");
-    //   const timelineWidth = timeline.offsetWidth;
-    //   const position = (startTime / videoPlayer.duration) * timelineWidth;
-    //   btn.style.left = `${position}px`;
-
-    //   // Calculate the vertical position based on the number of buttons
-    //   const buttonHeight = 30; // Adjust this value as needed
-    //   const buttonCount = buttonContainer.children.length;
-    //   btn.style.top = `${buttonHeight * buttonCount}px`;
-
-    // buttonContainer.appendChild(btn);
-
-    
-
-       
-       
-    //    // Add a click event listener to the button
-    //   btn.addEventListener("click", function () {
-    //   // Retrieve data attributes for the clicked button
-    //   const clickedName = btn.dataset.name;
-    //   const clickedStartTime = Number(btn.dataset.startTime);
-    //   const clickedEndTime = Number(btn.dataset.endTime);
-
-
-
-    //   // Call the performAction function with the button's data
-    //   performAction(clickedName, clickedStartTime, clickedEndTime);
-    // });
-    //}
-      
-
-  
-
   
   
 </script>
-<div class="visualization-box">
+<!-- Audio Visualization Part-->
+<div class="visualization-box"> 
   <div class="audio-box">
     <div id="waveform"></div>
     <button id="play-button">Play</button>
@@ -829,71 +717,101 @@ audio {
   <audio id="audio" controls></audio>
 </div>
 <script>
+  // This code runs when the window has finished loading
   window.onload = function() {
-  
-  var file = document.getElementById("thefile");
-  var audio = document.getElementById("audio");
-  
-  file.onchange = function() {
-    var files = this.files;
-    audio.src = URL.createObjectURL(files[0]);
-    audio.load();
-    audio.play();
-    var context = new AudioContext();
-    var src = context.createMediaElementSource(audio);
-    var analyser = context.createAnalyser();
 
-    var canvas = document.getElementById("canvas");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    var ctx = canvas.getContext("2d");
+    // Get references to HTML elements by their IDs
+    var file = document.getElementById("thefile"); // Input element for selecting a file
+    var audio = document.getElementById("audio"); // Audio element for playing the selected audio
 
-    src.connect(analyser);
-    analyser.connect(context.destination);
+    // When a file is selected in the input element, this function is executed
+    file.onchange = function() {
+      // Get the selected file(s)
+      var files = this.files;
+      
+      // Set the source of the audio element to the URL of the selected file
+      audio.src = URL.createObjectURL(files[0]);
+      
+      // Load and play the audio
+      audio.load();
+      audio.play();
 
-    analyser.fftSize = 256;
+      // Create an AudioContext
+      var context = new AudioContext();
+      
+      // Create a media element source node from the audio element
+      var src = context.createMediaElementSource(audio);
+      
+      // Create an analyser node for analyzing audio data
+      var analyser = context.createAnalyser();
 
-    var bufferLength = analyser.frequencyBinCount;
-    console.log(bufferLength);
+      // Get a reference to the HTML5 canvas element
+      var canvas = document.getElementById("canvas");
+      // Set the canvas size to match the window's dimensions
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      var ctx = canvas.getContext("2d");
 
-    var dataArray = new Uint8Array(bufferLength);
+      // Connect the source to the analyser node and the analyser to the destination (speakers)
+      src.connect(analyser);
+      analyser.connect(context.destination);
 
-    var WIDTH = canvas.width;
-    var HEIGHT = canvas.height;
+      // Set the FFT (Fast Fourier Transform) size, which determines the frequency resolution
+      analyser.fftSize = 256;
 
-    var barWidth = (WIDTH / bufferLength) * 2.5;
-    var barHeight;
-    var x = 0;
+      // Get the number of frequency bins available for analysis
+      var bufferLength = analyser.frequencyBinCount;
+      console.log(bufferLength);
 
-    function renderFrame() {
-      requestAnimationFrame(renderFrame);
+      // Create an array to store the frequency data
+      var dataArray = new Uint8Array(bufferLength);
 
-      x = 0;
+      // Define canvas and bar properties
+      var WIDTH = canvas.width;
+      var HEIGHT = canvas.height;
+      var barWidth = (WIDTH / bufferLength) * 2.5;
+      var barHeight;
+      var x = 0;
 
-      analyser.getByteFrequencyData(dataArray);
+      // This function is called repeatedly to render the visualizer
+      function renderFrame() {
+        // Request the next animation frame, allowing for smooth animation
+        requestAnimationFrame(renderFrame);
 
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(0, 0, WIDTH, HEIGHT);
+        // Reset the x position
+        x = 0;
 
-      for (var i = 0; i < bufferLength; i++) {
-        barHeight = dataArray[i];
-        
-        var r = barHeight + (25 * (i/bufferLength));
-        var g = 250 * (i/bufferLength);
-        var b = 50;
+        // Get the frequency data for the current audio frame
+        analyser.getByteFrequencyData(dataArray);
 
-        ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
-        ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+        // Clear the canvas
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-        x += barWidth + 1;
+        // Loop through the frequency data and draw bars
+        for (var i = 0; i < bufferLength; i++) {
+          barHeight = dataArray[i];
+
+          // Define the color of the bars based on frequency data
+          var r = barHeight + (25 * (i / bufferLength));
+          var g = 250 * (i / bufferLength);
+          var b = 50;
+
+          ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+          ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+
+          // Move to the next bar position
+          x += barWidth + 1;
+        }
       }
-    }
 
-    audio.play();
-    renderFrame();
+      // Start playing the audio and rendering the frame
+      audio.play();
+      renderFrame();
+    };
   };
-};
 </script>
+
 
 
  
